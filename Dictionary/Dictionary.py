@@ -1,18 +1,14 @@
 from tkinter import *
+from tkinter.filedialog import *
+from tkinter.messagebox import *
+import sys, fileinput
 import os
 
 thisFolder = os.path.dirname(os.path.abspath(__file__))
 global dec
-start = False
 
-while start is not True:
-    try:
-        dec = input('Введите имя файла: ')
-        f = open(os.path.join(thisFolder,dec),'r')
-        f.close()
-        start = True
-    except FileNotFoundError:
-        print('Файл не найден. Попробуйте снова.')
+
+#print(fileinput.input(file))
 
 def delTranslation(event):
     selection = event.widget.curselection()
@@ -20,9 +16,11 @@ def delTranslation(event):
     toSelected = toList[selection[0]].strip("\n")
     selected2 = f'{fromSelected},{toSelected}'
     translation.configure(text=f'Удалено слово: {fromList[selection[0]]}')
-    with open(os.path.join(thisFolder, dec),'r',encoding='utf-8') as f:
+    #with open(os.path.join(thisFolder, dec),'r',encoding='utf-8') as f:
+    with open(dec,encoding="utf-8") as f:
         lines = f.readlines()
-    with open(os.path.join(thisFolder, dec),'w',encoding='utf-8') as f:
+    #with open(os.path.join(thisFolder, dec),'w',encoding='utf-8') as f:
+    with open(dec,"w",encoding="utf-8") as f:
         for i in lines:
             if selected2 == i.rstrip('\n'):
                 lines.remove(i)
@@ -43,7 +41,8 @@ def addTranslation():
             if i == ',':
                 x+=1
     if x == 1:
-        with open(os.path.join(thisFolder, dec),'a',encoding='utf-8') as f:
+        #with open(os.path.join(thisFolder, dec),'a',encoding='utf-8') as f:
+        with open(dec,"a",encoding="utf-8") as f:
             f.write(f'\n{word}')
             refresh()
     else:
@@ -59,7 +58,8 @@ def translate(event):
 def dump():
     global fromList,toList
     fromList,toList = [],[]
-    with open(os.path.join(thisFolder, dec),encoding='utf-8')as f:
+    #with open(os.path.join(thisFolder, dec),encoding='utf-8')as f:
+    with open(dec,encoding="utf-8") as f:
         lines = f.readlines()
         for i in lines:
             fromI = i.split(',')
@@ -108,6 +108,11 @@ w.create_window(230,150,window=transBut)
 
 guide = Label(main,text='При добавлении перевода пишите его в след формате:\n оригинал,перевод')
 w.create_window(230,120,window=guide)
+
+dec = askopenfilename()
+
+#open = Button(main,command=add)
+#w.create_window(200,400,window=open)
 
 refresh()
 

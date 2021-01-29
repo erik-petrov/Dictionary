@@ -1,6 +1,6 @@
-привет,hi
 пока,bye
 продать,sell
 материнская плата,motherboard
 словарь,dictionary
 напиток,beverage
+привет,hi
